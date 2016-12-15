@@ -3,9 +3,68 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Gymnast Score Tracker</title>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 	<h1> Gymnast Score Tracker</h1>
+	<form class="gymnasts">
+		<div>
+			<label for="name">Name</label>
+			<input type="text" name="name" class="nameinput">
+		</div>
+		<div>
+			<label for="age">Age</label>
+			<input type="text" name="age" class="ageinput">
+		</div>
+		<div>
+			<label for="gender">Gender</label>
+			<select name="gender" class="genderlist">
+				<option value="female">Female</option>
+				<option value="male">Male</option>
+			</select>
+		</div>
+		<div>
+			<label for="level">Level</label>	
+			<select name="level" class="levellist">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				</select>
+			<button class="addGymnast">Add Gymnast</button>
+		</div>
+	</form>
+	
+	<div class="gymnast-list">
+	</div>
+	<div class="competitions">
+		<input type="text" class="newCompetition">
+		<button class="addCompetition">Add Competition</button>
+		
+
+	<ul class="competition-list">
+	</ul>
+	</div>	
+
+	<div class="templates">
+		<div class="gymnast">
+			<p class="name">Name</p>
+			<p>
+				<span class="gender">Gender</span> - <span class="age">Age</span></p>
+			<p class="level">Level</p>
+			<button data-id="id" class="delete-button">Delete</button>
+			<button class="add-competition">Add Competition</button>
+		</div>
+
+	</div>	
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script src="build/app.js"></script>
 </body>
 
