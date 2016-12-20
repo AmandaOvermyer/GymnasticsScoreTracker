@@ -1,3 +1,14 @@
+* {
+    text-align: center;
+}
+body {
+    line-height: 1.5;
+}
 .addCompetition, .newCompetition, .templates {
 	display: none;
+}
+
+.competition {
+    
+display:inline;
 }

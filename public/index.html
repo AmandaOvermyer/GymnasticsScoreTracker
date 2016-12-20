@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Gymnast Score Tracker</title>
 	<link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 	<h1> Gymnast Score Tracker</h1>
+
+
 	<form class="gymnasts">
 		<div>
 			<label for="name">Name</label>
@@ -24,7 +28,7 @@
 			</select>
 		</div>
 		<div>
-			<label for="level">Level</label>	
+			<label for="level">Level</label>
 			<select name="level" class="levellist">
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -40,32 +44,105 @@
 			<button class="addGymnast">Add Gymnast</button>
 		</div>
 	</form>
-	
+
+
+
+
 	<div class="gymnast-list">
 	</div>
-	<div class="competitions">
-		<input type="text" class="newCompetition">
-		<button class="addCompetition">Add Competition</button>
-		
-
-	<ul class="competition-list">
-	</ul>
-	</div>	
 
 	<div class="templates">
-		<div class="gymnast">
+		<div data-position="" class="gymnast">
 			<p class="name">Name</p>
 			<p>
 				<span class="gender">Gender</span> - <span class="age">Age</span></p>
 			<p class="level">Level</p>
-			<button data-id="id" class="delete-button">Delete</button>
+			<button class="edit-gymnast">Edit</button>
+			<button class="delete-button">Delete</button>
 			<button class="add-competition">Add Competition</button>
+			<button class="show-competitions">Show All Competitions</button>
+			<div class="competition-list">
+				
+			</div>
 		</div>
+		<div data-id="id" class="competition">
+			<p class="userId"></p>
+			<p class="compId"></p>
+			<p class="name">Name</p>
+			<p class="date">Date</p>
+			<p class="location">Location</p>
+			<p class="final_position">Final Position</p>
+			<p class="floor_score">Floor Score</p>
+			<p class="floor_final_position">Floor Final Position</p>
+			<p class="beam_score">Beam Score</p>
+			<p class="beam_final_position">Beam Final Position</p>
+			<p class="vault_score">Vault Score</p>
+			<p class="vault_final_position">Vault Final Position</p>
+			<p class="bars_score">Bars Score</p>
+			<p class="bars_final_position">Bars Final Position</p>
+			<button class="delete-competition">Delete</button>
+		</div>
+		
+		<form class="competitions">
+			<div>
+				<input type="hidden" name="userId" class="userIdInput">
+			</div>
+			<div>
+				<label for="name">Name</label>
+				<input type="text" name="name" class="nameinput" required>
+			</div>
+			<div>
+				<label for="date">Date</label>
+				<input type="text" name="date" class="dateinput">
+			</div>
+			<div>
+				<label for="location">Location</label>
+				<input type="location" name="location" class="locationinput">
+			</div>
 
-	</div>	
+			<div>
+				<label for="final_position">Final Position</label>
+				<input type="text" name="final_position" class="final_position_input">
+			</div>
+			<div>
+				<label for="floor_score">Floor Score</label>
+				<input type="text" name="floor_score" class="floor_score_input">
+			</div>
+			<div>
+				<label for="floor_final_position">Floor Final Position</label>
+				<input type="text" name="floor_final_position" class="floor_final_position_input">
+			</div>
+			<div>
+				<label for="beam_score">Beam Score</label>
+				<input type="text" name="beam_score" class="beam_score_input">
+			</div>
+			<div>
+				<label for="beam_final_position">Beam Final Position</label>
+				<input type="text" name="beam_final_position" class="beam_final_position_input">
+			</div>
+			<div>
+				<label for="vault_score">Vault Score</label>
+				<input type="text" name="vault_score_input" class="vault_score_input">
+			</div>
+			<div>
+				<label for="vault_final_position">Vault Final Position</label>
+				<input type="text" name="vault_final_position" class="vault_final_position_input">
+			</div>
+			<div>
+				<label for="bars_score">Bars Score</label>
+				<input type="text" name="bars_score" class="bars_score_input">
+			</div>
+			<div>
+				<label for="bars_final_position">Bars Final Position</label>
+				<input type="text" name="bars_final_position" class="bars_final_position_input">
+			</div>
+			<button class="saveCompetition">Save</button>
 
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script src="build/app.js"></script>
+		</form>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script src="build/app.js"></script>
 </body>
 
 </html>

@@ -62,8 +62,13 @@ app.get('/gymnast', function(request, response){
 })
 
 app.get('/gymnast/:id/competition', function(request, response){
-	Competition.find(function(err, competitions){
+	var id = request.params.id;
+	
+	Competition.find({
+		user_id: id
+	},function(err, competitions){
 		if (err){
+			console.log(err);
 			return response.status(500).json({
 				message: 'Internal Server Error'
 			});
@@ -138,7 +143,7 @@ var runServer = function(callback) {
             callback(err);
             return;
         }
-        app.listen(8080, function(){
+        app.listen(process.env.PORT, process.env.IP, function(){
             if (callback) {
                 callback();
             }
