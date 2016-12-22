@@ -74,6 +74,9 @@
 	function onGymnastSave(data) {
 		var gymnastList = $('.gymnast-list');
 		var i = gymnastCollection.length;
+		var gymnast = new _Gymnast2.default(data.name, data.age, data.gender, data.level);
+		gymnast.setId(data._id);
+		gymnastCollection.push(gymnast);
 		gymnastList.append(addGymnast(i, data));
 	}
 
@@ -95,12 +98,22 @@
 	}
 
 	function addGymnast(i, data) {
+		console.log(i);
 		var gymnastTemplate = $('.templates > .gymnast').clone();
 		gymnastTemplate.find('.name').text(data.name);
 		gymnastTemplate.find('.age').text("age: " + data.age);
 		gymnastTemplate.find('.gender').text(data.gender);
 		gymnastTemplate.find('.level').text("level: " + data.level);
 		gymnastTemplate.attr("data-position", i);
+		return gymnastTemplate;
+	}
+
+	function replaceGymnast(data) {
+		var gymnastTemplate = $('.templates > .gymnast > .gymnast-data').clone();
+		gymnastTemplate.find('.name').text(data.name);
+		gymnastTemplate.find('.age').text("age: " + data.age);
+		gymnastTemplate.find('.gender').text(data.gender);
+		gymnastTemplate.find('.level').text("level: " + data.level);
 		return gymnastTemplate;
 	}
 
@@ -126,7 +139,8 @@
 	$('.gymnast-list').on('click', ".add-competition", function () {
 		$(".nameinput").val("").focus();
 		var form = $('.templates > .competitions').clone();
-		var id = $(this).parent().attr("data-id");
+		var position = $(this).parent().attr("data-position");
+		var id = gymnastCollection[position].id;
 		form.find(".userIdInput").val(id);
 		$(this).parent().append(form);
 	});
@@ -166,13 +180,32 @@
 	});
 
 	$('.gymnast-list').on('click', ".edit-gymnast", function () {
+		console.log("hello");
 		var gymnastEl = $(this).parent();
-		var userId = gymnastEl.attr('data-id');
-		$.ajax('/gymnast/' + userId, {
-			type: 'PUT',
-			dataType: 'json',
-			contentType: 'application/json'
-		}).done(function (editGymnast) {});
+		var position = gymnastEl.attr('data-position');
+		var gymnast = gymnastCollection[position];
+		var form = $('.gymnasts').clone();
+		form.removeClass("gymnasts");
+		form.find(".nameinput").val(gymnast.name);
+		form.find(".ageinput").val(gymnast.age);
+		form.find(".genderlist").val(gymnast.gender);
+		form.find(".levellist").val(gymnast.level);
+		form.find(".addGymnast").text("Edit");
+		form.find(".addGymnast").click(function (e) {
+			e.preventDefault();
+			var newData = {
+				name: form.find(".nameinput").val(),
+				age: form.find(".ageinput").val(),
+				gender: form.find(".genderlist").val(),
+				level: form.find(".levellist").val()
+			};
+			gymnast.update(newData, function (data) {
+				var template = replaceGymnast(data);
+				gymnastEl.find(".gymnast-data").replaceWith(template);
+			});
+		});
+		gymnastEl.find(".gymnast-data").empty();
+		gymnastEl.find(".gymnast-data").append(form);
 	});
 
 	$('.gymnast-list').on('click', ".show-competitions", function () {
@@ -199,7 +232,7 @@
 		gymnast.remove(function (onRemove) {
 			$(_this).parent().remove();
 			console.log(_this);
-			gymnastCollection.splice(position, 1);
+			//gymnastCollection.splice(position, 1);
 		});
 	});
 
@@ -286,7 +319,7 @@
 			}
 		}, {
 			key: 'remove',
-			value: function remove(gymnastObject, onRemove) {
+			value: function remove(onRemove) {
 				$.ajax('/gymnast/' + this.id, {
 					type: 'DELETE',
 					dataType: 'json'

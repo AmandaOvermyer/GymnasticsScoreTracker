@@ -40,7 +40,7 @@ class Gymnast {
 	setId(id) {
 		this.id = id;
 	}
-	remove(gymnastObject, onRemove) {
+	remove(onRemove) {
 		$.ajax('/gymnast/' + this.id, {
 			type: 'DELETE',
 			dataType: 'json'
