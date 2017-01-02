@@ -1,14 +1,22 @@
-* {
-    text-align: center;
-}
 body {
     line-height: 1.5;
+    background-color: #6BADD1;
+
 }
 .addCompetition, .newCompetition, .templates {
 	display: none;
 }
 
-.competition {
-    
-display:inline;
+h1, .gymnasts {
+    text-align: center;
 }
+
+.gymnast {
+    text-align: left;
+    padding-left: 50px;
+}
+
+.competitions, .competition-data, .competition {
+    text-align: center;
+}
+

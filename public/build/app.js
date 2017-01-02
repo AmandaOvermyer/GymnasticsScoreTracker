@@ -81,7 +81,6 @@
 	}
 
 	function fetchGymnast() {
-		$(".nameinput").focus();
 		var gymnastList = $('.gymnast-list');
 		$.ajax('/gymnast', {
 			type: 'GET',
@@ -136,6 +135,25 @@
 		return competitionTemplate;
 	}
 
+	function replaceCompetition(data) {
+		var competitionTemplate = $('.templates > .competition > .competition-data').clone();
+		competitionTemplate.find('.userId').text(data.userId);
+		competitionTemplate.find('.name').text(data.name);
+		competitionTemplate.find('.date').text(data.date);
+		competitionTemplate.find('.location').text("Location: " + data.location);
+		competitionTemplate.find('.final_position').text("All Around: " + data.final_position);
+		competitionTemplate.find('.floor_score').text("Floor Score: " + data.floor_score);
+		competitionTemplate.find('.floor_final_position').text("Floor: " + data.floor_final_position);
+		competitionTemplate.find('.beam_score').text("Beam Score: " + data.beam_score);
+		competitionTemplate.find('.beam_final_position').text("Beam: " + data.beam_final_position);
+		competitionTemplate.find('.vault_score').text("Vault Score: " + data.vault_score);
+		competitionTemplate.find('.vault_final_position').text("Vault: " + data.vault_final_position);
+		competitionTemplate.find('.bars_score').text("Bars Score: " + data.bars_score);
+		competitionTemplate.find('.bars_final_position').text("Bars: " + data.bars_final_position);
+		competitionTemplate.attr("data-id", data._id);
+		return competitionTemplate;
+	}
+
 	$('.gymnast-list').on('click', ".add-competition", function () {
 		$(".nameinput").val("").focus();
 		var form = $('.templates > .competitions').clone();
@@ -148,6 +166,17 @@
 	$('.gymnast-list').on('click', '.saveCompetition', function (e) {
 		e.preventDefault();
 		var form = $(this).parent();
+		var gymnastEl = form.parent();
+		var position = gymnastEl.attr('data-position');
+		var gymnast = gymnastCollection[position];
+		var competition = competitionFormData(form);
+		gymnast.saveCompetition(competition, function (data) {
+			var competitionList = form.parent().find(".competition-list");
+			competitionList.append(addCompetition(data));
+		}), form.hide();
+	});
+
+	function competitionFormData(form) {
 		var userId = form.find(".userIdInput").val();
 		var name = form.find(".nameinput").val();
 		var date = form.find(".dateinput").val();
@@ -161,11 +190,12 @@
 		var vaultFinalPosition = form.find(".vault_final_position_input").val();
 		var barsScore = form.find(".bars_score_input").val();
 		var barsFinalPosition = form.find(".bars_final_position_input").val();
-		var competition = new _competition2.default(userId, name, date, location);
-		competition.save(function (data) {
-			var competitionList = form.parent().find(".competition-list");
-			competitionList.append(addCompetition(data));
-		}, {
+		//const competition = new Competition(userId, name, date, location);
+		var competition = {
+			userId: userId,
+			name: name,
+			date: date,
+			location: location,
 			final_position: finalPosition,
 			floor_score: floorScore,
 			floor_final_position: floorFinalPosition,
@@ -175,12 +205,11 @@
 			vault_final_position: vaultFinalPosition,
 			bars_score: barsScore,
 			bars_final_position: barsFinalPosition
-		});
-		form.hide();
-	});
+		};
+		return competition;
+	}
 
 	$('.gymnast-list').on('click', ".edit-gymnast", function () {
-		console.log("hello");
 		var gymnastEl = $(this).parent();
 		var position = gymnastEl.attr('data-position');
 		var gymnast = gymnastCollection[position];
@@ -211,16 +240,11 @@
 	$('.gymnast-list').on('click', ".show-competitions", function () {
 		$(".nameinput").val("").focus();
 		var gymnastEl = $(this).parent();
-		var userId = gymnastEl.attr('data-id');
+		var position = gymnastEl.attr('data-position');
+		var gymnast = gymnastCollection[position];
 		var competitionList = gymnastEl.find(".competition-list");
-		$.ajax('/gymnast/' + userId + '/competition', {
-			type: 'GET',
-			contentType: 'application/json'
-		}).done(function (competitionArray) {
-			for (var i = 0; i < competitionArray.length; i++) {
-				var data = competitionArray[i];
-				competitionList.append(addCompetition(data));
-			}
+		gymnast.getCompetitions(function (data) {
+			competitionList.append(addCompetition(data));
 		});
 	});
 
@@ -229,7 +253,7 @@
 
 		var position = $(this).parent().attr('data-position');
 		var gymnast = gymnastCollection[position];
-		gymnast.remove(function (onRemove) {
+		gymnast.remove(function () {
 			$(_this).parent().remove();
 			console.log(_this);
 			//gymnastCollection.splice(position, 1);
@@ -241,14 +265,50 @@
 
 		var compEl = $(this).parent();
 		var gymnastEl = compEl.parent().parent();
-		var userId = gymnastEl.attr('data-id');
+		var position = gymnastEl.attr('data-position');
+		var gymnast = gymnastCollection[position];
 		var compId = compEl.attr('data-id');
-		$.ajax('/gymnast/' + userId + '/competition/' + compId, {
-			type: 'DELETE',
-			dataType: 'json'
-		}).done(function () {
+		gymnast.deleteCompetition(compId, function () {
 			$(_this2).parent().remove();
 		});
+	});
+
+	$('.gymnast-list').on('click', ".edit-competition", function () {
+		var compEl = $(this).parent();
+		var gymnastEl = compEl.parent().parent();
+		var compId = compEl.attr('data-id');
+		var position = gymnastEl.attr('data-position');
+		var gymnast = gymnastCollection[position];
+		var competition = gymnast.getCompetitionbyId(compId);
+		var form = $('.competitions').clone();
+		form.removeClass("competitions");
+		form.find(".nameinput").val(competition.name);
+		form.find(".dateinput").val(competition.date);
+		form.find(".locationinput").val(competition.location);
+		form.find(".final_position_input").val(competition.final_position);
+		form.find(".floor_score_input").val(competition.floor_score);
+		form.find(".floor_final_position_input").val(competition.floor_final_position);
+		form.find(".beam_score_input").val(competition.beam_score);
+		form.find(".beam_final_position_input").val(competition.beam_final_position);
+		form.find(".vault_score_input").val(competition.vault_final_position);
+		form.find(".vault_final_position_input").val(competition.vault_final_position);
+		form.find(".bars_score_input").val(competition.bars_score);
+		form.find(".bars_final_position_input").val(competition.bars_final_position);
+
+		var competitionButton = form.find(".saveCompetition");
+		competitionButton.removeClass("saveCompetition");
+		competitionButton.text("Save Competition");
+		competitionButton.click(function (e) {
+			e.preventDefault();
+			var newData = competitionFormData(form);
+			gymnast.updateComp(compId, newData, function (data) {
+				var template = replaceCompetition(data);
+				compEl.find(".competition-data").replaceWith(template);
+			});
+		});
+
+		compEl.find(".competition-data").empty();
+		compEl.find(".competition-data").append(form);
 	});
 
 	fetchGymnast();
@@ -276,6 +336,7 @@
 			this.gender = gender;
 			this.level = level;
 			this.id = null;
+			this.competitions = [];
 		}
 
 		_createClass(Gymnast, [{
@@ -325,6 +386,97 @@
 					dataType: 'json'
 				}).done(onRemove);
 			}
+		}, {
+			key: 'getCompetitions',
+			value: function getCompetitions(onGet) {
+				var _this = this;
+
+				$.ajax('/gymnast/' + this.id + '/competition', {
+					type: 'GET',
+					contentType: 'application/json'
+				}).done(function (competitionResult) {
+					_this.competitions = [];
+					for (var i = 0; i < competitionResult.length; i++) {
+						var data = competitionResult[i];
+						_this.competitions.push(data);
+						onGet(data);
+					}
+				});
+			}
+		}, {
+			key: 'saveCompetition',
+			value: function saveCompetition(data, onSave) {
+				var _this2 = this;
+
+				$.ajax('/gymnast/' + this.id + '/competition', {
+					type: 'POST',
+					data: JSON.stringify(data),
+					dataType: 'json',
+					contentType: 'application/json'
+				}).done(function (result) {
+					_this2.competitions.push(result);
+					onSave(result);
+				});
+			}
+		}, {
+			key: 'deleteCompetition',
+			value: function deleteCompetition(id, onDelete) {
+				var _this3 = this;
+
+				$.ajax('/gymnast/' + this.id + '/competition/' + id, {
+					type: 'DELETE',
+					dataType: 'json'
+				}).done(function () {
+					onDelete();
+					var foundAt = -1;
+					for (var i = 0; i < _this3.competitions.length; i++) {
+						var competition = _this3.competitions[i];
+						if (competition._id == id) {
+							foundAt = i;
+							break;
+						}
+					}
+					if (foundAt !== -1) {
+						_this3.competitions.splice(foundAt, 1);
+					}
+				});
+			}
+		}, {
+			key: 'updateComp',
+			value: function updateComp(id, newData, onUpdateComp) {
+				var _this4 = this;
+
+				$.ajax('/gymnast/' + this.id + '/competition/' + id, {
+					type: 'PUT',
+					data: JSON.stringify(newData),
+					dataType: 'json',
+					contentType: 'application/json'
+				}).done(function (data) {
+					var index = _this4.getCompIndex(id);
+					_this4.competitions[index] = $.extend(_this4.competitions[index], newData);
+					onUpdateComp(data);
+				});
+			}
+		}, {
+			key: 'getCompetitionbyId',
+			value: function getCompetitionbyId(id) {
+				for (var i = 0; i < this.competitions.length; i++) {
+					var competition = this.competitions[i];
+					if (competition._id == id) {
+						return this.competitions[i];
+					}
+				}
+			}
+		}, {
+			key: 'getCompIndex',
+			value: function getCompIndex(id) {
+				for (var i = 0; i < this.competitions.length; i++) {
+					var competition = this.competitions[i];
+					if (competition._id == id) {
+						return i;
+					}
+				}
+			}
 		}]);
 
 		return Gymnast;
@@ -336,7 +488,7 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -357,7 +509,7 @@
 		}
 
 		_createClass(Competition, [{
-			key: 'save',
+			key: "save",
 			value: function save(onSave, otherFields) {
 				var payload = {
 					userId: this.userId,
@@ -368,12 +520,6 @@
 				$.extend(payload, otherFields);
 
 				console.log(payload);
-				$.ajax('/gymnast/' + this.userId + '/competition', {
-					type: 'POST',
-					data: JSON.stringify(payload),
-					dataType: 'json',
-					contentType: 'application/json'
-				}).done(onSave);
 			}
 		}]);
 

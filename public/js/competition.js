@@ -16,14 +16,9 @@ class Competition {
 		$.extend(payload, otherFields);
 		
 		console.log(payload);
-		$.ajax('/gymnast/' + this.userId + '/competition', {
-			type: 'POST',
-			data: JSON.stringify(payload),
-			dataType: 'json',
-			contentType: 'application/json',
-		}).done(onSave);
+		
 	}
-
+	
 }
 
 export default Competition;

@@ -14,7 +14,7 @@ $(".gymnasts").submit((e) => {
 	$(".ageinput").val("");
 	$(".genderlist").val("");
 	$(".levellist").val("");
-	
+
 
 });
 
@@ -25,11 +25,10 @@ function onGymnastSave(data) {
 	gymnast.setId(data._id);
 	gymnastCollection.push(gymnast);
 	gymnastList.append(addGymnast(i, data));
-	
+
 }
 
 function fetchGymnast() {
-	$(".nameinput").focus();
 	const gymnastList = $('.gymnast-list');
 	$.ajax('/gymnast', {
 		type: 'GET',
@@ -84,6 +83,26 @@ function addCompetition(data) {
 	return competitionTemplate;
 }
 
+function replaceCompetition(data) {
+	var competitionTemplate = $('.templates > .competition > .competition-data').clone();
+	competitionTemplate.find('.userId').text(data.userId);
+	competitionTemplate.find('.name').text(data.name);
+	competitionTemplate.find('.date').text(data.date);
+	competitionTemplate.find('.location').text("Location: " + data.location);
+	competitionTemplate.find('.final_position').text("All Around: " + data.final_position);
+	competitionTemplate.find('.floor_score').text("Floor Score: " + data.floor_score);
+	competitionTemplate.find('.floor_final_position').text("Floor: " + data.floor_final_position);
+	competitionTemplate.find('.beam_score').text("Beam Score: " + data.beam_score);
+	competitionTemplate.find('.beam_final_position').text("Beam: " + data.beam_final_position);
+	competitionTemplate.find('.vault_score').text("Vault Score: " + data.vault_score);
+	competitionTemplate.find('.vault_final_position').text("Vault: " + data.vault_final_position);
+	competitionTemplate.find('.bars_score').text("Bars Score: " + data.bars_score);
+	competitionTemplate.find('.bars_final_position').text("Bars: " + data.bars_final_position);
+	competitionTemplate.attr("data-id", data._id);
+	return competitionTemplate;
+	
+}
+
 $('.gymnast-list').on('click', ".add-competition", function() {
 	$(".nameinput").val("").focus();
 	var form = $('.templates > .competitions').clone();
@@ -93,9 +112,21 @@ $('.gymnast-list').on('click', ".add-competition", function() {
 	$(this).parent().append(form);
 });
 
-$('.gymnast-list').on('click', '.saveCompetition', function(e){
+$('.gymnast-list').on('click', '.saveCompetition', function(e) {
 	e.preventDefault();
 	var form = $(this).parent();
+	var gymnastEl = form.parent();
+	var position = gymnastEl.attr('data-position');
+	var gymnast = gymnastCollection[position];
+	const competition = competitionFormData(form);
+	gymnast.saveCompetition(competition, function(data) {
+			const competitionList = form.parent().find(".competition-list");
+			competitionList.append(addCompetition(data));
+		}),
+		form.hide();
+});
+
+function competitionFormData(form) {
 	const userId = form.find(".userIdInput").val();
 	const name = form.find(".nameinput").val();
 	const date = form.find(".dateinput").val();
@@ -109,11 +140,12 @@ $('.gymnast-list').on('click', '.saveCompetition', function(e){
 	const vaultFinalPosition = form.find(".vault_final_position_input").val();
 	const barsScore = form.find(".bars_score_input").val();
 	const barsFinalPosition = form.find(".bars_final_position_input").val();
-	const competition = new Competition(userId, name, date, location);
-	competition.save(function(data){
-		const competitionList = form.parent().find(".competition-list");
-		competitionList.append(addCompetition(data));
-	}, {
+	//const competition = new Competition(userId, name, date, location);
+	var competition = {
+		userId: userId,
+		name: name,
+		date: date,
+		location: location,
 		final_position: finalPosition,
 		floor_score: floorScore,
 		floor_final_position: floorFinalPosition,
@@ -123,13 +155,11 @@ $('.gymnast-list').on('click', '.saveCompetition', function(e){
 		vault_final_position: vaultFinalPosition,
 		bars_score: barsScore,
 		bars_final_position: barsFinalPosition
-	});
-	form.hide();
-});
+	};
+	return competition;
+}
 
-
-$('.gymnast-list').on('click', ".edit-gymnast", function(){
-	console.log("hello");
+$('.gymnast-list').on('click', ".edit-gymnast", function() {
 	var gymnastEl = $(this).parent();
 	var position = gymnastEl.attr('data-position');
 	var gymnast = gymnastCollection[position];
@@ -140,7 +170,7 @@ $('.gymnast-list').on('click', ".edit-gymnast", function(){
 	form.find(".genderlist").val(gymnast.gender);
 	form.find(".levellist").val(gymnast.level);
 	form.find(".addGymnast").text("Edit");
-	form.find(".addGymnast").click(function(e){
+	form.find(".addGymnast").click(function(e) {
 		e.preventDefault();
 		var newData = {
 			name: form.find(".nameinput").val(),
@@ -148,54 +178,86 @@ $('.gymnast-list').on('click', ".edit-gymnast", function(){
 			gender: form.find(".genderlist").val(),
 			level: form.find(".levellist").val(),
 		}
-		gymnast.update(newData, function(data){
+		gymnast.update(newData, function(data) {
 			var template = replaceGymnast(data);
 			gymnastEl.find(".gymnast-data").replaceWith(template);
 		})
 	})
 	gymnastEl.find(".gymnast-data").empty();
 	gymnastEl.find(".gymnast-data").append(form);
-	
+
 });
 
-$('.gymnast-list').on('click', ".show-competitions", function(){
+$('.gymnast-list').on('click', ".show-competitions", function() {
 	$(".nameinput").val("").focus();
 	var gymnastEl = $(this).parent();
-	var userId = gymnastEl.attr('data-id');
+	var position = gymnastEl.attr('data-position');
+	var gymnast = gymnastCollection[position];
 	const competitionList = gymnastEl.find(".competition-list");
-	$.ajax('/gymnast/' + userId + '/competition', {
-		type: 'GET',
-		contentType: 'application/json',
-	}).done(function(competitionArray) {
-		for (var i = 0; i < competitionArray.length; i++) {
-			const data = competitionArray[i];
-			competitionList.append(addCompetition(data));
-		}
-	});
+	gymnast.getCompetitions(function(data) {
+		competitionList.append(addCompetition(data));
+	})
 });
 
 $('.gymnast-list').on('click', ".delete-button", function() {
 	var position = $(this).parent().attr('data-position');
 	var gymnast = gymnastCollection[position];
-	gymnast.remove((onRemove) => {
+	gymnast.remove(() => {
 		$(this).parent().remove();
 		console.log(this);
 		//gymnastCollection.splice(position, 1);
 	})
-	
+
 });
 
-$('.gymnast-list').on('click', ".delete-competition", function(){
+$('.gymnast-list').on('click', ".delete-competition", function() {
 	var compEl = $(this).parent();
 	var gymnastEl = compEl.parent().parent();
-	var userId = gymnastEl.attr('data-id');
+	var position = gymnastEl.attr('data-position');
+	var gymnast = gymnastCollection[position];
 	var compId = compEl.attr('data-id');
-	$.ajax('/gymnast/' + userId + '/competition/' + compId,{
-		type: 'DELETE',
-		dataType: 'json'
-	}).done(() => {
+	gymnast.deleteCompetition(compId, () => {
 		$(this).parent().remove();
 	});
+});
+
+$('.gymnast-list').on('click', ".edit-competition", function() {
+	var compEl = $(this).parent();
+	var gymnastEl = compEl.parent().parent();
+	var compId = compEl.attr('data-id');
+	var position = gymnastEl.attr('data-position');
+	var gymnast = gymnastCollection[position];
+	var competition = gymnast.getCompetitionbyId(compId);
+	var form = $('.competitions').clone();
+	form.removeClass("competitions");
+	form.find(".nameinput").val(competition.name);
+	form.find(".dateinput").val(competition.date);
+	form.find(".locationinput").val(competition.location);
+	form.find(".final_position_input").val(competition.final_position);
+	form.find(".floor_score_input").val(competition.floor_score);
+	form.find(".floor_final_position_input").val(competition.floor_final_position);
+	form.find(".beam_score_input").val(competition.beam_score);
+	form.find(".beam_final_position_input").val(competition.beam_final_position);
+	form.find(".vault_score_input").val(competition.vault_final_position);
+	form.find(".vault_final_position_input").val(competition.vault_final_position);
+	form.find(".bars_score_input").val(competition.bars_score);
+	form.find(".bars_final_position_input").val(competition.bars_final_position);
+	
+	var competitionButton = form.find(".saveCompetition");
+	competitionButton.removeClass("saveCompetition");
+	competitionButton.text("Save Competition");
+	competitionButton.click(function(e) {
+		e.preventDefault();
+		var newData = competitionFormData(form);
+		gymnast.updateComp(compId, newData, function(data) {
+			var template = replaceCompetition(data);
+			compEl.find(".competition-data").replaceWith(template);
+		})
+	})
+	
+	compEl.find(".competition-data").empty();
+	compEl.find(".competition-data").append(form);
+	
 });
 
 fetchGymnast();
