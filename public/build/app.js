@@ -59,16 +59,21 @@
 	var gymnastCollection = [];
 	$(".gymnasts").submit(function (e) {
 		e.preventDefault();
-		var name = $(".nameinput").val();
-		var age = $(".ageinput").val();
+		var name = $(".nameinput").val().trim();
+		var age = $(".ageinput").val().trim();
 		var gender = $(".genderlist").val();
 		var level = $(".levellist").val();
-		var gymnast = new _Gymnast2.default(name, age, gender, level);
-		gymnast.save(onGymnastSave);
-		$(".nameinput").val("").focus();
-		$(".ageinput").val("");
-		$(".genderlist").val("");
-		$(".levellist").val("");
+
+		if (name == "" || age == "" || gender == "" || level == "") {
+			alert("There is information missing");
+		} else {
+			var gymnast = new _Gymnast2.default(name, age, gender, level);
+			gymnast.save(onGymnastSave);
+			$(".nameinput").val("").focus();
+			$(".ageinput").val("");
+			$(".genderlist").val("");
+			$(".levellist").val("");
+		}
 	});
 
 	function onGymnastSave(data) {
@@ -118,44 +123,33 @@
 
 	function addCompetition(data) {
 		var competitionTemplate = $('.templates > .competition').clone();
+		return competitionData(competitionTemplate, data);
+	}
+
+	function competitionData(competitionTemplate, data) {
 		competitionTemplate.find('.userId').text(data.userId);
 		competitionTemplate.find('.name').text(data.name);
 		competitionTemplate.find('.date').text(data.date);
 		competitionTemplate.find('.location').text("Location: " + data.location);
-		competitionTemplate.find('.final_position').text("All Around: " + data.final_position);
-		competitionTemplate.find('.floor_score').text("Floor Score: " + data.floor_score);
-		competitionTemplate.find('.floor_final_position').text("Floor: " + data.floor_final_position);
-		competitionTemplate.find('.beam_score').text("Beam Score: " + data.beam_score);
-		competitionTemplate.find('.beam_final_position').text("Beam: " + data.beam_final_position);
-		competitionTemplate.find('.vault_score').text("Vault Score: " + data.vault_score);
-		competitionTemplate.find('.vault_final_position').text("Vault: " + data.vault_final_position);
-		competitionTemplate.find('.bars_score').text("Bars Score: " + data.bars_score);
-		competitionTemplate.find('.bars_final_position').text("Bars: " + data.bars_final_position);
+		competitionTemplate.find('.final_position').text("All Around: " + (data.final_position || 0));
+		competitionTemplate.find('.floor_score').text("Floor Score: " + (data.floor_score || 0));
+		competitionTemplate.find('.floor_final_position').text("Floor: " + (data.floor_final_position || 0));
+		competitionTemplate.find('.beam_score').text("Beam Score: " + (data.beam_score || 0));
+		competitionTemplate.find('.beam_final_position').text("Beam: " + (data.beam_final_position || 0));
+		competitionTemplate.find('.vault_score').text("Vault Score: " + (data.vault_score || 0));
+		competitionTemplate.find('.vault_final_position').text("Vault: " + (data.vault_final_position || 0));
+		competitionTemplate.find('.bars_score').text("Bars Score: " + (data.bars_score || 0));
+		competitionTemplate.find('.bars_final_position').text("Bars: " + (data.bars_final_position || 0));
 		competitionTemplate.attr("data-id", data._id);
 		return competitionTemplate;
 	}
 
 	function replaceCompetition(data) {
 		var competitionTemplate = $('.templates > .competition > .competition-data').clone();
-		competitionTemplate.find('.userId').text(data.userId);
-		competitionTemplate.find('.name').text(data.name);
-		competitionTemplate.find('.date').text(data.date);
-		competitionTemplate.find('.location').text("Location: " + data.location);
-		competitionTemplate.find('.final_position').text("All Around: " + data.final_position);
-		competitionTemplate.find('.floor_score').text("Floor Score: " + data.floor_score);
-		competitionTemplate.find('.floor_final_position').text("Floor: " + data.floor_final_position);
-		competitionTemplate.find('.beam_score').text("Beam Score: " + data.beam_score);
-		competitionTemplate.find('.beam_final_position').text("Beam: " + data.beam_final_position);
-		competitionTemplate.find('.vault_score').text("Vault Score: " + data.vault_score);
-		competitionTemplate.find('.vault_final_position').text("Vault: " + data.vault_final_position);
-		competitionTemplate.find('.bars_score').text("Bars Score: " + data.bars_score);
-		competitionTemplate.find('.bars_final_position').text("Bars: " + data.bars_final_position);
-		competitionTemplate.attr("data-id", data._id);
-		return competitionTemplate;
+		return competitionData(competitionTemplate, data);
 	}
 
 	$('.gymnast-list').on('click', ".add-competition", function () {
-		$(".nameinput").val("").focus();
 		var form = $('.templates > .competitions').clone();
 		var position = $(this).parent().attr("data-position");
 		var id = gymnastCollection[position].id;
@@ -170,10 +164,14 @@
 		var position = gymnastEl.attr('data-position');
 		var gymnast = gymnastCollection[position];
 		var competition = competitionFormData(form);
-		gymnast.saveCompetition(competition, function (data) {
-			var competitionList = form.parent().find(".competition-list");
-			competitionList.append(addCompetition(data));
-		}), form.hide();
+		if (name == "" || date == "" || location == "") {
+			alert("There is information missing");
+		} else {
+			gymnast.saveCompetition(competition, function (data) {
+				var competitionList = form.parent().find(".competition-list");
+				competitionList.append(addCompetition(data));
+			}), form.hide();
+		}
 	});
 
 	function competitionFormData(form) {
@@ -219,7 +217,7 @@
 		form.find(".ageinput").val(gymnast.age);
 		form.find(".genderlist").val(gymnast.gender);
 		form.find(".levellist").val(gymnast.level);
-		form.find(".addGymnast").text("Edit");
+		form.find(".addGymnast").text("Save");
 		form.find(".addGymnast").click(function (e) {
 			e.preventDefault();
 			var newData = {

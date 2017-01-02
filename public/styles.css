@@ -7,16 +7,37 @@ body {
 	display: none;
 }
 
-h1, .gymnasts {
+h1 {
     text-align: center;
 }
 
-.gymnast {
-    text-align: left;
-    padding-left: 50px;
-}
 
 .competitions, .competition-data, .competition {
     text-align: center;
 }
+
+input[type=text]{
+  border-radius:5px;
+}
+
+.gymnasts > div {
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid black;
+    width: 200px;
+    padding: 5px;
+    line-height: 1.5;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.gymnast-list > div {
+    margin: 0 auto;
+    text-align: left;
+    border: 1px solid black;
+    width: 500px;
+    padding: 5px;
+    line-height: 1.5;
+}
+
 
