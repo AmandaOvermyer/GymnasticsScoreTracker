@@ -19,10 +19,6 @@ $(".gymnasts").submit((e) => {
 		$(".genderlist").val("");
 		$(".levellist").val("");
 	}
-	
-	
-
-
 });
 
 function onGymnastSave(data) {
