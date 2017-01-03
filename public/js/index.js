@@ -76,16 +76,16 @@ function competitionData(competitionTemplate, data){
 	competitionTemplate.find('.userId').text(data.userId);
 	competitionTemplate.find('.name').text(data.name);
 	competitionTemplate.find('.date').text(data.date);
-	competitionTemplate.find('.location').text("Location: " + data.location);
-	competitionTemplate.find('.final_position').text("All Around: " + (data.final_position || 0));
-	competitionTemplate.find('.floor_score').text("Floor Score: " + (data.floor_score || 0));
-	competitionTemplate.find('.floor_final_position').text("Floor: " + (data.floor_final_position || 0));
-	competitionTemplate.find('.beam_score').text("Beam Score: " + (data.beam_score || 0));
-	competitionTemplate.find('.beam_final_position').text("Beam: " + (data.beam_final_position || 0));
-	competitionTemplate.find('.vault_score').text("Vault Score: " + (data.vault_score || 0));
-	competitionTemplate.find('.vault_final_position').text("Vault: " + (data.vault_final_position || 0));
-	competitionTemplate.find('.bars_score').text("Bars Score: " + (data.bars_score || 0));
-	competitionTemplate.find('.bars_final_position').text("Bars: " + (data.bars_final_position || 0));
+	competitionTemplate.find('.location').text(data.location);
+	competitionTemplate.find('.final_position').text(data.final_position || 0);
+	competitionTemplate.find('.floor_score').text(data.floor_score || 0);
+	competitionTemplate.find('.floor_final_position').text(data.floor_final_position || 0);
+	competitionTemplate.find('.beam_score').text(data.beam_score || 0);
+	competitionTemplate.find('.beam_final_position').text(data.beam_final_position || 0);
+	competitionTemplate.find('.vault_score').text(data.vault_score || 0);
+	competitionTemplate.find('.vault_final_position').text(data.vault_final_position || 0);
+	competitionTemplate.find('.bars_score').text(data.bars_score || 0);
+	competitionTemplate.find('.bars_final_position').text(data.bars_final_position || 0);
 	competitionTemplate.attr("data-id", data._id);
 	return competitionTemplate;
 	
@@ -112,18 +112,19 @@ $('.gymnast-list').on('click', '.saveCompetition', function(e) {
 	var position = gymnastEl.attr('data-position');
 	var gymnast = gymnastCollection[position];
 	const competition = competitionFormData(form);
-	if (name == "" || date == "" || location == "" ){
+	if (competition.name == "" || competition.date == "" || competition.location == "" ){
 		alert ("There is information missing")
 	} else {
 	gymnast.saveCompetition(competition, function(data) {
 			const competitionList = form.parent().find(".competition-list");
 			competitionList.append(addCompetition(data));
-		}),
-		form.hide();
+			form.hide();
+		});
 	}
 });
 
 function competitionFormData(form) {
+	console.log(form.find(".final_position_input"));
 	const userId = form.find(".userIdInput").val();
 	const name = form.find(".nameinput").val();
 	const date = form.find(".dateinput").val();
@@ -153,6 +154,7 @@ function competitionFormData(form) {
 		bars_score: barsScore,
 		bars_final_position: barsFinalPosition
 	};
+	console.log(competition);
 	return competition;
 }
 

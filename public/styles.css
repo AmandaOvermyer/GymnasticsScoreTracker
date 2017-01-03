@@ -1,8 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     line-height: 1.5;
     background-color: #6BADD1;
 
 }
+.clearfix {
+  overflow: auto;
+  zoom:1
+}
+
 .addCompetition, .newCompetition, .templates {
 	display: none;
 }
@@ -40,4 +49,19 @@ input[type=text]{
     line-height: 1.5;
 }
 
+.grid-row {
+    width: 100%;
+    border: 1px solid;
+}
 
+.grid-row .column {
+    float: left;
+    width: 33.3333%;
+    background-color: white;
+}
+
+
+
+.grid-row.-header > .column{
+    font-weight: bold;
+}

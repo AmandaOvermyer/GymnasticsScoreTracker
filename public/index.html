@@ -72,23 +72,53 @@
 		</div>
 		<div data-id="id" class="competition">
 			<div class="competition-data">
-				<p class="userId"></p>
-				<p class="compId"></p>
-				<p class="name">Name</p>
-				<p class="date">Date</p>
-				<p class="location">Location</p>
-				<p class="final_position">Final Position</p>
-				<p class="floor_score">Floor Score</p>
-				<p class="floor_final_position">Floor Final Position</p>
-				<p class="beam_score">Beam Score</p>
-				<p class="beam_final_position">Beam Final Position</p>
-				<p class="vault_score">Vault Score</p>
-				<p class="vault_final_position">Vault Final Position</p>
-				<p class="bars_score">Bars Score</p>
-				<p class="bars_final_position">Bars Final Position</p>
+				<div class="column userId"></div>
+				<div class="column compId"></div>
+				<div class="grid-row -header clearfix">
+					<div class="column">Name</div>
+					<div class="column">Date</div>
+					<div class="column">Location</div>
+				</div>
+				<div class="grid-row clearfix">
+					<div class="column name">Name</div>
+					<div class="column date">Date</div>
+					<div class="column location">Location</div>
+				</div>	
+				<div class="grid-row -header clearfix">
+					<div class="column">Event</div>
+					<div class="column">Score</div>
+					<div class="column">Place</div>
+				</div>	
+				<div class="grid-row clearfix">
+					<div class="column">Floor</div>
+					<div class="column floor_score">Floor Score</div>
+					<div class="column floor_final_position">Floor Final Position</div>
+				</div>
+				<div class="grid-row clearfix">	
+					<div class="column">Beam</div>
+					<div class="column beam_score">Beam Score</div>
+					<div class="column beam_final_position">Beam Final Position</div>
+				</div>	
+				<div class="grid-row clearfix">	
+					<div class="column">Vault</div>
+					<div class="column vault_score">Vault Score</div>
+					<div class="column vault_final_position">Vault Final Position</div>
+				</div>
+				<div class="grid-row clearfix">
+					<div class="column">Bars</div>
+					<div class="column bars_score">Bars Score</div>
+					<div class="column bars_final_position">Bars Final Position</div>
+				</div>
+				<div class="grid-row clearfix">	
+					<div class="column">All Around</div>
+					<div class="column">-</div>
+					<div class="column final_position">Final Position</div>
+				</div>	
 			</div>
+			
 			<button class="edit-competition">Edit</button>
 			<button class="delete-competition">Delete</button>
+		    
 		</div>
 
 		<form class="competitions">
@@ -107,7 +137,6 @@
 				<label for="location">Location:*</label>
 				<input type="text" name="location" class="locationinput">
 			</div>
-		<div class="Events">Events
 			<div>
 				<label for="final_position">Final Position:</label>
 				<input type="text" name="final_position" class="final_position_input">
@@ -144,7 +173,6 @@
 				<label for="bars_final_position">Bars Final Position:</label>
 				<input type="text" name="bars_final_position" class="bars_final_position_input">
 			</div>
-		</div>	
 			<p>*Required fields</p>
 			<button class="saveCompetition">Save</button>
 
