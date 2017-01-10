@@ -57,7 +57,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var gymnastCollection = [];
-	$(".gymnasts").submit(function (e) {
+	$(".js-create-gymnast").submit(function (e) {
 		e.preventDefault();
 		var name = $(".nameinput").val().trim();
 		var age = $(".ageinput").val().trim();
@@ -105,10 +105,10 @@
 		console.log(i);
 		var gymnastTemplate = $('.templates > .gymnast').clone();
 		gymnastTemplate.find('.name').text(data.name);
-		gymnastTemplate.find('.age').text("age: " + data.age);
+		gymnastTemplate.find('.age').text(data.age);
 		gymnastTemplate.find('.gender').text(data.gender);
 		gymnastTemplate.find('.level').text("level: " + data.level);
-		gymnastTemplate.attr("data-position", i);
+		gymnastTemplate.find('.gymnast-content').attr("data-position", i);
 		return gymnastTemplate;
 	}
 
@@ -150,7 +150,7 @@
 	}
 
 	$('.gymnast-list').on('click', ".add-competition", function () {
-		var form = $('.templates > .competitions').clone();
+		var form = $('.templates > .js-create-competition').clone();
 		var position = $(this).parent().attr("data-position");
 		var id = gymnastCollection[position].id;
 		form.find(".userIdInput").val(id);
@@ -214,8 +214,8 @@
 		var gymnastEl = $(this).parent();
 		var position = gymnastEl.attr('data-position');
 		var gymnast = gymnastCollection[position];
-		var form = $('.gymnasts').clone();
-		form.removeClass("gymnasts");
+		var form = $('.js-create-gymnast').clone();
+		form.removeClass("js-create-gymnast");
 		form.find(".nameinput").val(gymnast.name);
 		form.find(".ageinput").val(gymnast.age);
 		form.find(".genderlist").val(gymnast.gender);
@@ -281,8 +281,8 @@
 		var position = gymnastEl.attr('data-position');
 		var gymnast = gymnastCollection[position];
 		var competition = gymnast.getCompetitionbyId(compId);
-		var form = $('.competitions').clone();
-		form.removeClass("competitions");
+		var form = $('.js-create-competition').clone();
+		form.removeClass("js-create-competition");
 		form.find(".nameinput").val(competition.name);
 		form.find(".dateinput").val(competition.date);
 		form.find(".locationinput").val(competition.location);

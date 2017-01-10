@@ -1,11 +1,20 @@
 * {
     box-sizing: border-box;
+    font-family: 'Pridi', serif;
+}
+#bg {
+  position:absolute;
+  left:0px;
+  top:0px;
+  z-index:-1;
+  min-width: 100%;
+  min-height: 100%;
+  
 }
 
 body {
-    line-height: 1.5;
-    background-color: #6BADD1;
-
+    width: 100%;
+    line-height: 1;
 }
 .clearfix {
   overflow: auto;
@@ -32,22 +41,12 @@ input[type=text]{
 .gymnasts > div {
     margin: 0 auto;
     text-align: center;
-    border: 1px solid black;
-    width: 200px;
-    padding: 5px;
-    line-height: 1.5;
+    width: 300px;
     overflow: hidden;
     white-space: nowrap;
+    margin-bottom: 5px;
 }
 
-.gymnast-list > div {
-    margin: 0 auto;
-    text-align: left;
-    border: 1px solid black;
-    width: 500px;
-    padding: 5px;
-    line-height: 1.5;
-}
 
 .grid-row {
     width: 100%;
@@ -60,8 +59,64 @@ input[type=text]{
     background-color: white;
 }
 
-
-
 .grid-row.-header > .column{
     font-weight: bold;
 }
+.gymnast-list {
+    width: 100%;
+}
+.gymnast {
+    background-color: white;
+    padding: 5px;
+    line-height: 1.5;
+}
+
+.gymnast:nth-child(odd){
+    background-color: gray;
+}
+
+.gymnast-data >.name {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+}
+.gymnast-content {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+button {
+    margin: 0 auto;
+    background-color: white;
+    border: 1px solid;
+    border-radius: 5px;
+}
+.competitions label {
+    width: 100%;
+    display: block;
+    text-align: left;
+}
+
+.competitions input {
+    width: 100%;
+    display: block;
+}
+
+.competitions > div {
+    margin-bottom: 5px;
+}
+
+.gymnasts label {
+    width: 100%;
+    display: block;
+    text-align: left;
+}
+
+.gymnasts input, .gymnasts select {
+    width: 100%;
+    display: block;
+}
+
+
+

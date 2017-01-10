@@ -5,13 +5,14 @@
 	<meta charset="UTF-8">
 	<title>Gymnast Score Tracker</title>
 	<link rel="stylesheet" href="styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Pridi" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body>
-	<h1> Gymnast Score Tracker</h1>
+	<h1><a href="https://res.cloudinary.com/aovermyer/image/upload/c_scale,o_23,w_629/v1483928531/gymnastic_silhouette-3_opnfwo.jpg">Gymnast Score Tracker</a></h1>
 
-
-	<form class="gymnasts">
+	<form class="gymnasts js-create-gymnast">
 		<div>
 			<label for="name">Name:*</label>
 			<input type="text" name="name" class="nameinput">
@@ -43,6 +44,8 @@
 				<option value="9">9</option>
 				<option value="10">10</option>
 				</select>
+		</div>
+		<div>
 			<button class="addGymnast">Add Gymnast</button>
 		</div>
 	</form>
@@ -54,21 +57,22 @@
 	</div>
 
 	<div class="templates">
-		<div data-position="" class="gymnast">
-			<div class="gymnast-data">
-				<p class="name">Name</p>
-				<p>
-					<span class="gender">Gender</span> - <span class="age">Age</span></p>
-				<p class="level">Level</p>
-			</div>
-
-			<button class="edit-gymnast">Edit</button>
-			<button class="delete-button">Delete</button>
-			<button class="add-competition">Add Competition</button>
-			<button class="show-competitions">Show All Competitions</button>
-			<div class="competition-list">
-
-			</div>
+		<div class="gymnast">
+			<div data-position="" class="gymnast-content">	
+				<div class="gymnast-data">
+					<p class="name">Name</p>
+					<p>
+						<span class="gender">Gender</span> - <span class="age">Age</span> - <span class="level">Level</span>
+					</p>
+				</div>
+	
+				<i class="fa fa-pencil-square-o edit-gymnast" aria-hidden="true"></i>
+				<i class="fa fa-trash-o delete-button" aria-hidden="true"></i>
+				<button class="add-competition">Add Competition</button>
+				<button class="show-competitions">Show All Competitions</button>
+				<div class="competition-list">
+				</div>
+			</div>	
 		</div>
 		<div data-id="id" class="competition">
 			<div class="competition-data">
@@ -121,7 +125,7 @@
 		    
 		</div>
 
-		<form class="competitions">
+		<form class="competitions js-create-competition">
 			<div>
 				<input type="hidden" name="userId" class="userIdInput">
 			</div>
