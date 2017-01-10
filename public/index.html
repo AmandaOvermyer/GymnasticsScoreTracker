@@ -10,8 +10,16 @@
 </head>
 
 <body>
-	<h1><a href="https://res.cloudinary.com/aovermyer/image/upload/c_scale,o_23,w_629/v1483928531/gymnastic_silhouette-3_opnfwo.jpg">Gymnast Score Tracker</a></h1>
-
+	<div class="banner">
+			<div class="banner-logo">
+				<img class="banner-image" src="https://res.cloudinary.com/aovermyer/image/upload/c_scale,w_406/v1484051214/gymnastic_silhouette-5_ygc237.jpg"></img>
+			</div>
+			<div class="banner-text">
+				<h1>Gymnast Score Tracker</h1>
+			</div>	
+	</div>	
+	
+	
 	<form class="gymnasts js-create-gymnast">
 		<div>
 			<label for="name">Name:*</label>
@@ -65,9 +73,10 @@
 						<span class="gender">Gender</span> - <span class="age">Age</span> - <span class="level">Level</span>
 					</p>
 				</div>
-	
-				<i class="fa fa-pencil-square-o edit-gymnast" aria-hidden="true"></i>
-				<i class="fa fa-trash-o delete-button" aria-hidden="true"></i>
+				<div class="action-buttons">
+					<i class="fa fa-pencil-square-o edit-gymnast" aria-hidden="true"></i>
+					<i class="fa fa-trash-o delete-button" aria-hidden="true"></i>
+				</div>	
 				<button class="add-competition">Add Competition</button>
 				<button class="show-competitions">Show All Competitions</button>
 				<div class="competition-list">
@@ -120,9 +129,8 @@
 				</div>	
 			</div>
 			
-			<button class="edit-competition">Edit</button>
-			<button class="delete-competition">Delete</button>
-		    
+			<i class="fa fa-pencil-square-o edit-competition" aria-hidden="true"></i>
+			<i class="fa fa-trash-o delete-competition" aria-hidden="true"></i>
 		</div>
 
 		<form class="competitions js-create-competition">
@@ -178,7 +186,7 @@
 				<input type="text" name="bars_final_position" class="bars_final_position_input">
 			</div>
 			<p>*Required fields</p>
-			<button class="saveCompetition">Save</button>
+			<i class="fa fa-floppy-o saveCompetition" aria-hidden="true"></i>
 
 		</form>
 	</div>

@@ -2,18 +2,31 @@
     box-sizing: border-box;
     font-family: 'Pridi', serif;
 }
-#bg {
-  position:absolute;
-  left:0px;
-  top:0px;
-  z-index:-1;
-  min-width: 100%;
-  min-height: 100%;
-  
+
+.banner {
+    background-color: #3c8597;
+    padding: 15px 0;
+    text-align: center;
 }
 
-body {
+.banner-logo{
+    display:inline-block;
+    vertical-align: middle;
+}
+.banner-image {
+    width: 100px;
+}
+
+.banner-text {
+    vertical-align: middle;
+    color: white;
+    display: inline-block;
+}
+
+body, html {
     width: 100%;
+    margin: 0;
+    padding: 0;
     line-height: 1;
 }
 .clearfix {
@@ -25,18 +38,14 @@ body {
 	display: none;
 }
 
-h1 {
-    text-align: center;
-}
-
-
 .competitions, .competition-data, .competition {
     text-align: center;
 }
 
-input[type=text]{
+/*input[type=text]{
   border-radius:5px;
 }
+*/
 
 .gymnasts > div {
     margin: 0 auto;
@@ -46,7 +55,9 @@ input[type=text]{
     white-space: nowrap;
     margin-bottom: 5px;
 }
-
+.gymnasts {
+    margin-top: 20px;
+}
 
 .grid-row {
     width: 100%;
@@ -67,18 +78,20 @@ input[type=text]{
 }
 .gymnast {
     background-color: white;
-    padding: 5px;
+    padding: 15px 0;
     line-height: 1.5;
+    position: relative;
 }
 
 .gymnast:nth-child(odd){
-    background-color: gray;
+    background-color: #3c8597;
 }
 
 .gymnast-data >.name {
     text-align: center;
     font-weight: bold;
     font-size: 25px;
+    margin:0;
 }
 .gymnast-content {
     text-align: center;
@@ -118,5 +131,14 @@ button {
     display: block;
 }
 
+.action-buttons {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 20px;
+    display: none;
+}
 
-
+.gymnast:hover .action-buttons {
+    display: block;
+}

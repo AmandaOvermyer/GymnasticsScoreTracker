@@ -102,6 +102,7 @@ $('.gymnast-list').on('click', ".add-competition", function() {
 	var position = $(this).parent().attr("data-position");
 	var id = gymnastCollection[position].id;
 	form.find(".userIdInput").val(id);
+	$(this).parent().find(".competition-list").empty();
 	$(this).parent().append(form);
 });
 
@@ -188,11 +189,12 @@ $('.gymnast-list').on('click', ".edit-gymnast", function() {
 });
 
 $('.gymnast-list').on('click', ".show-competitions", function() {
-	$(".nameinput").val("").focus();
 	var gymnastEl = $(this).parent();
 	var position = gymnastEl.attr('data-position');
 	var gymnast = gymnastCollection[position];
 	const competitionList = gymnastEl.find(".competition-list");
+	competitionList.empty();
+	gymnastEl.find('.js-create-competition').remove();
 	gymnast.getCompetitions(function(data) {
 		competitionList.append(addCompetition(data));
 	})
