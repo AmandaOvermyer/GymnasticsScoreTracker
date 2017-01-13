@@ -159,8 +159,9 @@ function competitionFormData(form) {
 	return competition;
 }
 
+
 $('.gymnast-list').on('click', ".edit-gymnast", function() {
-	var gymnastEl = $(this).parent();
+	var gymnastEl = $(this).parent().parent();
 	var position = gymnastEl.attr('data-position');
 	var gymnast = gymnastCollection[position];
 	var form = $('.js-create-gymnast').clone();
@@ -196,15 +197,19 @@ $('.gymnast-list').on('click', ".show-competitions", function() {
 	competitionList.empty();
 	gymnastEl.find('.js-create-competition').remove();
 	gymnast.getCompetitions(function(data) {
-		competitionList.append(addCompetition(data));
+		if (!data){
+			alert ("There are no competitions entered yet")
+		} else {
+			competitionList.append(addCompetition(data));
+		}	
 	})
 });
 
 $('.gymnast-list').on('click', ".delete-button", function() {
-	var position = $(this).parent().attr('data-position');
+	var position = $(this).parent().parent().attr('data-position');
 	var gymnast = gymnastCollection[position];
 	gymnast.remove(() => {
-		$(this).parent().remove();
+		$(this).parent().parent().remove();
 		console.log(this);
 		//gymnastCollection.splice(position, 1);
 	})
@@ -246,7 +251,6 @@ $('.gymnast-list').on('click', ".edit-competition", function() {
 	
 	var competitionButton = form.find(".saveCompetition");
 	competitionButton.removeClass("saveCompetition");
-	competitionButton.text("Save Competition");
 	competitionButton.click(function(e) {
 		e.preventDefault();
 		var newData = competitionFormData(form);
@@ -261,4 +265,8 @@ $('.gymnast-list').on('click', ".edit-competition", function() {
 	
 });
 
-fetchGymnast();
+$('.start-tracker').on('click', function(){
+	$(".splash-screen").hide();
+	$(".gymnasts").show();
+	fetchGymnast();
+})

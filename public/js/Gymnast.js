@@ -60,7 +60,9 @@ class Gymnast {
 				this.competitions.push(data);
 				onGet(data);
 			}
-
+			if (competitionResult.length == 0) {
+				onGet(false);
+			} 
 		});
 	}
 	saveCompetition(data, onSave) {

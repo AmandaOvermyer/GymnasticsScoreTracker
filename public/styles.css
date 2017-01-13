@@ -23,11 +23,39 @@
     display: inline-block;
 }
 
+.splash-screen {
+    width: 100%;
+    margin: 0 auto;
+    
+}
+.splash-banner {
+    font-size: 0;
+}
+
+.banner-image1, .banner-image2, .banner-image3, .banner-image4 {
+    width: 25%;
+}
+
+.splash-screen p {
+    color: white;
+    width: 48%;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    padding: 15px 0;
+}
+.start-tracker {
+    width: 100px;
+    display: block;
+    padding: 7px;
+    margin-bottom: 10px;
+}
 body, html {
     width: 100%;
     margin: 0;
     padding: 0;
     line-height: 1;
+    background-color: #3c8597
 }
 .clearfix {
   overflow: auto;
@@ -57,6 +85,9 @@ body, html {
 }
 .gymnasts {
     margin-top: 20px;
+    display:none;
+    background-color: white;
+    padding: 15px 0;
 }
 
 .grid-row {
@@ -78,7 +109,7 @@ body, html {
 }
 .gymnast {
     background-color: white;
-    padding: 15px 0;
+    padding: 10px 0;
     line-height: 1.5;
     position: relative;
 }
@@ -141,4 +172,16 @@ button {
 
 .gymnast:hover .action-buttons {
     display: block;
+}
+
+.competition {
+    padding-top: 15px;
+}
+.competition .edit-competition, .competition .delete-competition {
+    font-size: 20px;
+}
+
+.competitions .fa-floppy-o {
+    font-size: 20px;
+    padding-bottom: 10px;
 }
