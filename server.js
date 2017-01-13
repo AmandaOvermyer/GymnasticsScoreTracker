@@ -138,7 +138,13 @@ app.delete('/gymnast/:id/competition/:competition_id', jsonParser, function(requ
 
 
 var runServer = function(callback) {
-    mongoose.connect('mongodb://localhost', function(err){
+	var database; 
+	if(process.env.NODE_ENV === "production"){
+		database = "mongodb://"+process.env.DBUSER+":"+process.env.DBPASSWORD+"@"+process.env.DBURL;
+	} else {
+		database = "mongodb://localhost/test";
+	}
+    mongoose.connect(database, function(err){
         if (err && callback) {
             callback(err);
             return;
