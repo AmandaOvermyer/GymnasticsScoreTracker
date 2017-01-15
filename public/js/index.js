@@ -59,7 +59,7 @@ function addGymnast(i, data) {
 }
 
 function replaceGymnast(data) {
-	var gymnastTemplate = $('.templates > .gymnast > .gymnast-data').clone();
+	var gymnastTemplate = $('.templates > .gymnast >.gymnast-content > .gymnast-data').clone();
 	gymnastTemplate.find('.name').text(data.name);
 	gymnastTemplate.find('.age').text("age: " + data.age);
 	gymnastTemplate.find('.gender').text(data.gender);
