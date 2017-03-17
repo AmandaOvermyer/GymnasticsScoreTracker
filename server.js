@@ -13,7 +13,7 @@ app.use(express.static('public'));
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    /*res.setHeader('Access-Control-Allow-Origin', '*');*/
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -154,7 +154,7 @@ app.delete('/gymnast/:id/competition/:competition_id', jsonParser, function(requ
 
 
 
-/*var runServer = function(callback) {
+var runServer = function(callback) {
 	var database; 
 	if(process.env.NODE_ENV === "production"){
 		database = "mongodb://"+process.env.DBUSER+":"+process.env.DBPASSWORD+"@"+process.env.DBURL;
@@ -184,6 +184,5 @@ if (require.main === module) {
 
 
 exports.server = app;
-exports.runServer = runServer;*/
+exports.runServer = runServer;
 
-app.listen(process.env.PORT || 8080, process.env.IP);
